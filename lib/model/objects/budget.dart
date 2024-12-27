@@ -13,18 +13,18 @@ class Budget {
   double amount;
   List<Envelope> envelopes;
 
-  get totalEnvelopeOperations {
+  double get totalEnvelopeOperations {
     return envelopes.fold<double>(
       0,
       (previousValue, element) => previousValue + element.totalOperations,
     );
   }
 
-  get remainingAmount {
+  double get remainingAmount {
     return amount - totalEnvelopeOperations;
   }
 
-  get remainingRatio {
+  dynamic get remainingRatio {
     if (amount == 0) {
       return 0;
     }

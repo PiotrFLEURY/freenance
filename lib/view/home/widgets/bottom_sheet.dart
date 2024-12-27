@@ -29,19 +29,19 @@ class _HomeBottomSheetState extends ConsumerState<HomeBottomSheet> {
   late double _height;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     _height = 0.2;
   }
 
-  _toggleBottomSheet() {
+  void _toggleBottomSheet() {
     setState(() {
       _isExpanded = !_isExpanded;
       _height = _isExpanded ? 0.7 : 0.2;
     });
   }
 
-  _changeHeight(BuildContext context, double delta) {
+  void _changeHeight(BuildContext context, double delta) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double newHeight = screenHeight * _height + -1 * delta;
     if (newHeight > screenHeight * 0.2 && newHeight < screenHeight * 0.7) {
@@ -51,16 +51,14 @@ class _HomeBottomSheetState extends ConsumerState<HomeBottomSheet> {
     }
   }
 
-  _onDragEnd() {
+  void _onDragEnd() {
     if (_height > 0.5) {
       setState(() {
         _height = 0.7;
-        _isExpanded = true;
       });
     } else {
       setState(() {
         _height = 0.2;
-        _isExpanded = false;
       });
     }
   }
@@ -69,16 +67,21 @@ class _HomeBottomSheetState extends ConsumerState<HomeBottomSheet> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
+      onEnd: () => setState(() {
+        if (_height == 0.7) {
+          _isExpanded = true;
+        } else {
+          _isExpanded = false;
+        }
+      }),
       width: double.infinity,
       height: MediaQuery.of(context).size.height * _height,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32),
-          topRight: Radius.circular(32),
-        ),
+        borderRadius: BorderRadius.zero,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Bottom sheet drag handle
           GestureDetector(
@@ -96,46 +99,44 @@ class _HomeBottomSheetState extends ConsumerState<HomeBottomSheet> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 24,
-              left: 24,
-              right: 24,
+          ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Restant',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  '${widget.currentBudget.remainingAmount.toStringAsFixed(2)} €',
+                  style: TextStyle(
+                    color: mainColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  widget.currentBudget.remainingRatio.toStringAsFixed(0) + ' %',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Restant',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    widget.currentBudget.remainingRatio.toStringAsFixed(0) +
-                        ' %',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              subtitle: LinearProgressIndicator(
+            subtitle: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: LinearProgressIndicator(
+                minHeight: 32,
+                borderRadius: BorderRadius.circular(8),
                 value: widget.currentBudget.remainingRatio / 100,
                 backgroundColor: Colors.grey[200],
                 valueColor: AlwaysStoppedAnimation<Color>(mainColor),
               ),
             ),
           ),
-          Text(
-            widget.currentBudget.remainingAmount.toStringAsFixed(2) + ' €',
-            style: TextStyle(
-              color: mainColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+
           if (_isExpanded)
             Expanded(
               child: ListView.builder(

@@ -55,7 +55,7 @@ final budgetListProvider = AutoDisposeFutureProvider<List<Budget>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef BudgetListRef = AutoDisposeFutureProviderRef<List<Budget>>;
-String _$envelopeHash() => r'bdfda014f486e1e15f53a900be51b952bdcb51f3';
+String _$envelopeHash() => r'a676af9c0bf9a75450985da070a20dc05d3b7ee0';
 
 /// Copied from Dart SDK
 class _SystemHash {
