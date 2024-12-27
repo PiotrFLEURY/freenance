@@ -28,6 +28,8 @@ class Envelope {
     return amount - totalOperations;
   }
 
+  double get remainingRatio => amount > 0 ? remainingAmount / amount : 0;
+
   static Envelope fromMap(Map<String, Object?> e) {
     return Envelope(
       id: e['id'] as int,

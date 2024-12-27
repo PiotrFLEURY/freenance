@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
+import 'package:freenance/view/envelope/envelope_screen.dart';
 import 'package:freenance/view/home/widgets/budget_edition_dialog.dart';
 import 'package:freenance/view_model/providers.dart';
 import 'package:freenance/view/theme/colors.dart';
@@ -17,6 +18,17 @@ class HomeScreen extends ConsumerStatefulWidget {
 class HomeScreenState extends ConsumerState<HomeScreen> {
   // PageView controller
   final PageController _pageController = PageController();
+  final HomeBottomSheetController _bottomSheetController =
+      HomeBottomSheetController();
+  bool _showFloatingActionButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      _bottomSheetController.close();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +105,19 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
+      floatingActionButton: _showFloatingActionButton
+          ? FloatingActionButton(
+              onPressed: () {
+                final budget = budgetList[_pageController.page?.round() ?? 0];
+                _addEnvelope(budget);
+              },
+              backgroundColor: mainColor,
+              foregroundColor: Colors.white,
+              child: const Icon(
+                Icons.add,
+              ),
+            )
+          : null,
       body: PageView.builder(
         controller: _pageController,
         itemCount: budgetList.length,
@@ -169,11 +194,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               HomeBottomSheet(
                 currentBudget: currentBudget,
                 onAddEnvelope: () => _addEnvelope(currentBudget),
+                onEditEnvelope: (envelope) => _editEnvelope(envelope),
                 onDeleteEnvelope: (envelope) => _deleteEnvelope(
                   context,
                   currentBudget,
                   envelope,
                 ),
+                onSizeChanged: _expansionListener,
+                controller: _bottomSheetController,
               ),
             ],
           );
@@ -263,6 +291,16 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     ref.invalidate(budgetListProvider);
   }
 
+  void _editEnvelope(Envelope envelope) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EnvelopeScreen(
+          envelopeId: envelope.id,
+        ),
+      ),
+    );
+  }
+
   void _deleteEnvelope(
     BuildContext context,
     Budget budget,
@@ -273,5 +311,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     budget.envelopes.remove(envelope);
     ref.read(budgetRepositoryProvider).deleteEnvelope(envelope);
     ref.invalidate(budgetListProvider);
+  }
+
+  void _expansionListener(bool isExpanded) {
+    setState(() {
+      _showFloatingActionButton = isExpanded;
+    });
   }
 }
