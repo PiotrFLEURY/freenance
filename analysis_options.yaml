@@ -1,7 +1,3 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
-#
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
 # IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
 # invoked from the command line by running `flutter analyze`.
 
@@ -24,6 +20,11 @@ linter:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
     require_trailing_commas: true  # Uncomment to enable the `require_trailing_commas` rule
+    always_declare_return_types: true  # Uncomment to enable the `always_declare_return_types` rule
+
+analyzer:
+  exclude:
+    - '**/*.pickled.dart'
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

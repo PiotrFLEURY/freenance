@@ -42,6 +42,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Scaffold _errorScreen(Object error, StackTrace stackTrace) {
+    debugPrint('An error occurred: $error\n\n $stackTrace');
     return Scaffold(
       backgroundColor: mainColor,
       body: SingleChildScrollView(

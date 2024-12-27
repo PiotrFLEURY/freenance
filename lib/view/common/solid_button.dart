@@ -18,13 +18,13 @@ class SolidButton extends StatefulWidget {
 class _SolidButtonState extends State<SolidButton> {
   bool _pressed = false;
 
-  _onPress() {
+  void _onPress() {
     setState(() {
       _pressed = true;
     });
   }
 
-  _onRelease() {
+  void _onRelease() {
     setState(() {
       _pressed = false;
     });

@@ -13,18 +13,18 @@ class Envelope {
   double amount;
   List<Operation> operations;
 
-  get totalOperations {
+  double get totalOperations {
     return operations.fold<double>(
       0,
       (previousValue, element) => previousValue + element.amount,
     );
   }
 
-  get operationCount {
+  int get operationCount {
     return operations.length;
   }
 
-  get remainingAmount {
+  double get remainingAmount {
     return amount - totalOperations;
   }
 

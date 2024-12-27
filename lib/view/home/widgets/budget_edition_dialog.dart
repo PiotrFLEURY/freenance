@@ -16,7 +16,7 @@ class _BudgetEditionDialogState extends State<BudgetEditionDialog> {
   final amountController = TextEditingController();
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     labelController.text = widget.budget.label;
     amountController.text = widget.budget.amount.toString();

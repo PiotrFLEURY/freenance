@@ -1,5 +1,5 @@
 name: freenance
-description: "A new Flutter project."
+description: "A Free personal finance management app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -53,6 +53,10 @@ dev_dependencies:
   custom_lint: ^0.7.0
   riverpod_lint: ^2.6.3
   drift_dev: ^2.22.1
+  integration_test:
+    sdk: flutter
+  pickled_cucumber: ^1.1.0
+  mockito: ^5.4.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
