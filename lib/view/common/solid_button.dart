@@ -6,10 +6,12 @@ class SolidButton extends StatefulWidget {
     super.key,
     required this.text,
     required this.action,
+    this.color = mainColor,
   });
 
   final String text;
   final void Function() action;
+  final Color color;
 
   @override
   State<SolidButton> createState() => _SolidButtonState();
@@ -39,7 +41,7 @@ class _SolidButtonState extends State<SolidButton> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: mainColor,
+          color: widget.color,
           borderRadius: BorderRadius.circular(8),
           boxShadow: _pressed
               ? null

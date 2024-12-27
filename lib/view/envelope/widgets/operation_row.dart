@@ -12,6 +12,7 @@ class OperationRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: Icon(Icons.arrow_downward_outlined),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

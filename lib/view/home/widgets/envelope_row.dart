@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:freenance/model/objects/envelope.dart';
-import 'package:freenance/view/envelope/envelope_screen.dart';
+import 'package:freenance/view/theme/colors.dart';
 
 class EnvelopeRow extends StatelessWidget {
   const EnvelopeRow({
     super.key,
     required this.envelope,
     required this.onDelete,
+    required this.onTap,
   });
 
   final Envelope envelope;
+  final void Function(Envelope) onTap;
   final void Function(Envelope) onDelete;
 
   @override
@@ -31,16 +33,19 @@ class EnvelopeRow extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => EnvelopeScreen(
-                envelopeId: envelope.id,
-              ),
+        onTap: () => onTap(envelope),
+        leading: Stack(
+          alignment: Alignment.center,
+          children: [
+            CircularProgressIndicator(
+              value: envelope.remainingRatio,
+              color: mainColor,
+              strokeWidth: 4,
+              strokeCap: StrokeCap.round,
             ),
-          );
-        },
-        leading: Icon(Icons.shopping_cart_outlined),
+            Icon(Icons.mail_outline),
+          ],
+        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
