@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/view/common/solid_button.dart';
+import 'package:freenance/view_model/providers.dart';
 
-class BudgetEditionDialog extends StatefulWidget {
+class BudgetEditionDialog extends ConsumerStatefulWidget {
   const BudgetEditionDialog({super.key, required this.budget});
 
   final Budget budget;
 
   @override
-  State<BudgetEditionDialog> createState() => _BudgetEditionDialogState();
+  ConsumerState<BudgetEditionDialog> createState() =>
+      _BudgetEditionDialogState();
 }
 
-class _BudgetEditionDialogState extends State<BudgetEditionDialog> {
+class _BudgetEditionDialogState extends ConsumerState<BudgetEditionDialog> {
   final labelController = TextEditingController();
   final amountController = TextEditingController();
 
@@ -24,6 +27,7 @@ class _BudgetEditionDialogState extends State<BudgetEditionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
     return AlertDialog(
       title: Text('Editer le budget'),
       content: Column(
@@ -63,6 +67,7 @@ class _BudgetEditionDialogState extends State<BudgetEditionDialog> {
           SizedBox(height: 16),
           SolidButton(
             text: 'Valider',
+            color: mainColor,
             action: () {
               final newBudget = Budget(
                 id: widget.budget.id,

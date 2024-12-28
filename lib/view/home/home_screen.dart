@@ -4,8 +4,8 @@ import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/view/envelope/envelope_screen.dart';
 import 'package:freenance/view/home/widgets/budget_edition_dialog.dart';
+import 'package:freenance/view/home/widgets/drawer.dart';
 import 'package:freenance/view_model/providers.dart';
-import 'package:freenance/view/theme/colors.dart';
 import 'package:freenance/view/home/widgets/bottom_sheet.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -28,6 +28,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     _pageController.addListener(() {
       _bottomSheetController.close();
     });
+    ref.read(colorNotifierProvider.notifier).refreshColorTheme();
   }
 
   @override
@@ -55,6 +56,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   Scaffold _errorScreen(Object error, StackTrace stackTrace) {
     debugPrint('An error occurred: $error\n\n $stackTrace');
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
     return Scaffold(
       backgroundColor: mainColor,
       body: SingleChildScrollView(
@@ -76,25 +78,16 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     WidgetRef ref,
     List<Budget> budgetList,
   ) {
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
+
     return Scaffold(
       backgroundColor: mainColor,
+      drawer: Drawer(
+        child: FreenanceDrawer(),
+      ),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            showAboutDialog(
-              context: context,
-              applicationIcon: FlutterLogo(),
-              applicationName: 'Freenance',
-              applicationVersion: '1.0.0',
-              applicationLegalese: '© 2024 Piotr FLEURY',
-            );
-          },
-          icon: Icon(
-            Icons.info_outlined,
-            color: Colors.white,
-          ),
-        ),
         backgroundColor: mainColor,
+        foregroundColor: Colors.white,
         centerTitle: false,
         title: Text(
           'Freenance',
@@ -211,6 +204,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Scaffold _loadingScreen() {
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
     return Scaffold(
       backgroundColor: mainColor,
       body: Center(

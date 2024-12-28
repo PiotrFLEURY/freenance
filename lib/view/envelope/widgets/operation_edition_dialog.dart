@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/view/common/solid_button.dart';
+import 'package:freenance/view_model/providers.dart';
 
-class EditionDialog extends StatefulWidget {
+class EditionDialog extends ConsumerStatefulWidget {
   const EditionDialog({
     super.key,
     required this.title,
@@ -14,10 +16,10 @@ class EditionDialog extends StatefulWidget {
   final double amount;
 
   @override
-  State<EditionDialog> createState() => _EditionDialogState();
+  ConsumerState<EditionDialog> createState() => _EditionDialogState();
 }
 
-class _EditionDialogState extends State<EditionDialog> {
+class _EditionDialogState extends ConsumerState<EditionDialog> {
   final TextEditingController _labelController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
 
@@ -30,6 +32,7 @@ class _EditionDialogState extends State<EditionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
     return AlertDialog(
       title: Text(widget.title),
       content: Column(
@@ -70,6 +73,7 @@ class _EditionDialogState extends State<EditionDialog> {
           SizedBox(height: 16),
           SolidButton(
             text: 'Valider',
+            color: mainColor,
             action: () {
               Navigator.of(context).pop(
                 (_labelController.text, double.parse(_amountController.text)),

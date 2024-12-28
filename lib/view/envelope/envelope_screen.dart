@@ -5,7 +5,6 @@ import 'package:freenance/model/objects/operation.dart';
 import 'package:freenance/view/common/solid_button.dart';
 import 'package:freenance/view/envelope/widgets/operation_edition_dialog.dart';
 import 'package:freenance/view/envelope/widgets/operation_row.dart';
-import 'package:freenance/view/theme/colors.dart';
 import 'package:freenance/view_model/providers.dart';
 
 class EnvelopeScreen extends ConsumerStatefulWidget {
@@ -54,6 +53,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
   }
 
   Widget _buildEnvelopeScreen(BuildContext context, Envelope envelope) {
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
@@ -184,6 +184,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
               padding: const EdgeInsets.all(16.0),
               child: SolidButton(
                 text: 'Ajouter',
+                color: mainColor,
                 action: () => _addOperation(context, envelope),
               ),
             ),
