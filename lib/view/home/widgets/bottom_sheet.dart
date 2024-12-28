@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/view/home/widgets/envelope_row.dart';
-import 'package:freenance/view/theme/colors.dart';
-// ignore: unused_import
 import 'package:freenance/view_model/providers.dart';
 
 const double _kHeight = 0.15;
@@ -97,6 +95,7 @@ class _HomeBottomSheetState extends ConsumerState<HomeBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
       width: double.infinity,

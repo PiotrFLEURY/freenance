@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/envelope.dart';
-import 'package:freenance/view/theme/colors.dart';
+import 'package:freenance/view_model/providers.dart';
 
-class EnvelopeRow extends StatelessWidget {
+class EnvelopeRow extends ConsumerWidget {
   const EnvelopeRow({
     super.key,
     required this.envelope,
@@ -15,7 +16,8 @@ class EnvelopeRow extends StatelessWidget {
   final void Function(Envelope) onDelete;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mainColor = ref.watch(colorNotifierProvider).mainColor;
     return Dismissible(
       key: Key('${envelope.id}'),
       onDismissed: (_) {
