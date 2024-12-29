@@ -17,7 +17,9 @@ class EnvelopeRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mainColor = ref.watch(colorNotifierProvider).mainColor;
+    final envelopeColor = ref.watch(colorNotifierProvider).envelopeColor(
+          envelope.id,
+        );
     return Dismissible(
       key: Key('${envelope.id}'),
       onDismissed: (_) {
@@ -41,7 +43,7 @@ class EnvelopeRow extends ConsumerWidget {
           children: [
             CircularProgressIndicator(
               value: envelope.remainingRatio,
-              color: mainColor,
+              color: envelopeColor,
               strokeWidth: 4,
               strokeCap: StrokeCap.round,
             ),
