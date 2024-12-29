@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/model/objects/operation.dart';
+import 'package:freenance/view/color_picker/color_picker.dart';
 import 'package:freenance/view/common/solid_button.dart';
 import 'package:freenance/view/envelope/widgets/operation_edition_dialog.dart';
 import 'package:freenance/view/envelope/widgets/operation_row.dart';
@@ -53,7 +54,9 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
   }
 
   Widget _buildEnvelopeScreen(BuildContext context, Envelope envelope) {
-    final mainColor = ref.watch(colorNotifierProvider).mainColor;
+    final envelopeColor = ref.watch(colorNotifierProvider).envelopeColor(
+          envelope.id,
+        );
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
@@ -63,6 +66,14 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Envelope ${envelope.label}'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.color_lens_outlined),
+              onPressed: () {
+                _changeEnvelopeColor(context, envelope);
+              },
+            ),
+          ],
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,7 +87,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
-                    color: mainColor,
+                    color: envelopeColor,
                   ),
                 ),
               ),
@@ -184,7 +195,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
               padding: const EdgeInsets.all(16.0),
               child: SolidButton(
                 text: 'Ajouter',
-                color: mainColor,
+                color: envelopeColor,
                 action: () => _addOperation(context, envelope),
               ),
             ),
@@ -254,5 +265,38 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
     ref.read(budgetRepositoryProvider).deleteOperation(operation);
     ref.invalidate(envelopeProvider(widget.envelopeId));
     _filteredOperations = [];
+  }
+
+  Future<void> _changeEnvelopeColor(
+    BuildContext context,
+    Envelope envelope,
+  ) async {
+    // Fetch current color theme
+    final colorTheme = ref.watch(colorNotifierProvider);
+
+    // Fetch the current color of the envelope
+    final envelopeColor = colorTheme.envelopeRgb(envelope.id);
+
+    // Open the color picker
+    final (double, double, double)? rgb = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ColorPicker(
+          red: envelopeColor.$1,
+          green: envelopeColor.$2,
+          blue: envelopeColor.$3,
+        ),
+      ),
+    );
+    if (rgb == null) {
+      return;
+    }
+
+    // Update the color of the envelope
+    ref.read(colorNotifierProvider.notifier).changeEnvelopeColor(
+          envelope.id,
+          rgb.$1,
+          rgb.$2,
+          rgb.$3,
+        );
   }
 }

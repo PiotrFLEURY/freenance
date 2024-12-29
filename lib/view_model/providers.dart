@@ -38,16 +38,17 @@ class ColorNotifier extends _$ColorNotifier {
   @override
   ColorTheme build() {
     final mainColor = '0000FF';
-    return ColorTheme(mainColorHex: mainColor);
+    return ColorTheme(
+      mainColorHex: mainColor,
+      envelopeColors: {},
+    );
   }
 
   Future<void> refreshColorTheme() async {
     // Obtain shared preferences.
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    state = ColorTheme(
-      mainColorHex: prefs.getString('mainColor') ?? '0000FF',
-    );
+    state = ColorTheme.fromPrefs(prefs);
   }
 
   void changeMainColor(double red, double green, double blue) async {
@@ -59,6 +60,29 @@ class ColorNotifier extends _$ColorNotifier {
 
     // Save the new color.
     await prefs.setString('mainColor', newColor);
+
+    refreshColorTheme();
+  }
+
+  void changeEnvelopeColor(
+    int envelopeId,
+    double red,
+    double green,
+    double blue,
+  ) async {
+    // Convert the RGB values to a hexadecimal string.
+    final newColor = rgbToHex(red, green, blue);
+
+    // Obtain shared preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final currentTheme = ColorTheme.fromPrefs(prefs);
+
+    // Update the color for the envelope.
+    currentTheme.envelopeColors[envelopeId] = newColor;
+
+    // Save the updated theme.
+    currentTheme.toPrefs(prefs);
 
     refreshColorTheme();
   }
