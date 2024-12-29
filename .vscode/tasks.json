@@ -11,5 +11,15 @@
             },
             "problemMatcher": []
         }
+        {
+            "label": "generate icon",
+            "type": "shell",
+            "command": "dart run flutter_launcher_icons",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
     ]
 }
