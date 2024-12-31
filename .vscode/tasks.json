@@ -10,7 +10,7 @@
                 "isDefault": true
             },
             "problemMatcher": []
-        }
+        },
         {
             "label": "generate icon",
             "type": "shell",
