@@ -151,8 +151,7 @@ class _HomeBottomSheetState extends ConsumerState<HomeBottomSheet> {
                     ),
                   ),
                   Text(
-                    widget.currentBudget.remainingRatio.toStringAsFixed(0) +
-                        ' %',
+                    '${widget.currentBudget.remainingRatio.toStringAsFixed(0)} %',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                     ),

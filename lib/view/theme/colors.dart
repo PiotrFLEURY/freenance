@@ -1,3 +1,5 @@
 import 'package:flutter/material.dart';
 
-const mainColor = Color(0xFF109FF3);
+const String defaultColorHex = '109FF3';
+
+const defaultColor = Color(0xFF109FF3);

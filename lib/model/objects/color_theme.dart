@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freenance/view/theme/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ColorTheme {
@@ -11,18 +12,20 @@ class ColorTheme {
   });
 
   factory ColorTheme.fromPrefs(SharedPreferences prefs) {
-    final mainColorHex = prefs.getString('mainColor') ?? '0000FF';
+    final mainColorHex = prefs.getString('mainColor') ?? defaultColorHex;
 
     final prefsEnvelopeColors = prefs.getStringList('envelopeColors') ?? [];
 
     final Map<int, String> envelopeColors = Map.fromIterable(
       prefsEnvelopeColors,
       key: (e) {
-        final parts = e.split(':');
+        final envelopeColor = e as String;
+        final parts = envelopeColor.split(':');
         return int.parse(parts[0]);
       },
       value: (e) {
-        final parts = e.split(':');
+        final envelopeColor = e as String;
+        final parts = envelopeColor.split(':');
         return parts[1];
       },
     );
