@@ -20,6 +20,16 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "generate coverage report",
+            "type": "shell",
+            "command": "flutter test --coverage && lcov --remove coverage/lcov.info -o coverage/lcov.info 'lib/view/**/*' 'lib/model/logic/freenance_db.dart' '**/*.g.dart' 'lib/view_model/providers.dart' && genhtml coverage/lcov.info -o coverage/html && open coverage/html/index.html",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
         }
     ]
 }

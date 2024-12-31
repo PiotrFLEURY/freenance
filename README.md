@@ -45,7 +45,7 @@ VsCode task has been created in order to generate sources using a simple shortcu
 2. Type `Run Task` select `Tasks: Run Task` and hit `Enter`
 3. Now select `generate sources` and hit `Enter`
 
-See [.vscode/tasks.json.vscode/tasks.json) for tasks definition.
+See [.vscode/tasks.json](.vscode/tasks.json) for tasks definition.
 
 ## Generate App icon
 
@@ -70,4 +70,37 @@ VsCode task has been created in order to generate App icon using a simple shortc
 2. Type `Run Task` select `Tasks: Run Task` and hit `Enter`
 3. Now select `generate icon` and hit `Enter`
 
-See [.vscode/tasks.json.vscode/tasks.json) for tasks definition.
+See [.vscode/tasks.json](.vscode/tasks.json) for tasks definition.
+
+## Testing
+
+Two test categories are implemented:
+
+1. Unit tests + Mockito
+2. Cucumber tests
+
+### Run unit tests
+
+**Just run the tests**
+
+```bash
+flutter test
+```
+
+**Run unit tests with coverage**
+
+```bash
+flutter test --coverage
+```
+
+**Exclude files from coverage report**
+
+```bash
+lcov --remove coverage/lcov.info -o coverage/lcov.info 'lib/view/**/*' 'lib/model/logic/freenance_db.dart' '**/*.g.dart' 'lib/view_model/providers.dart'
+```
+
+**Generate coverage report**
+
+```
+genhtml coverage/lcov.info -o coverage/html
+```
