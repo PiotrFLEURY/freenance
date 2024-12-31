@@ -4,6 +4,7 @@ import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/logic/budget_repository.dart';
 import 'package:freenance/model/objects/color_theme.dart';
 import 'package:freenance/model/objects/envelope.dart';
+import 'package:freenance/view/theme/colors.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +38,7 @@ Future<Envelope> envelope(Ref ref, int envelopeId) async {
 class ColorNotifier extends _$ColorNotifier {
   @override
   ColorTheme build() {
-    final mainColor = '0000FF';
+    final mainColor = defaultColorHex;
     return ColorTheme(
       mainColorHex: mainColor,
       envelopeColors: {},

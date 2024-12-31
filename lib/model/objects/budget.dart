@@ -24,7 +24,7 @@ class Budget {
     return amount - totalEnvelopeOperations;
   }
 
-  dynamic get remainingRatio {
+  double get remainingRatio {
     if (amount == 0) {
       return 0;
     }

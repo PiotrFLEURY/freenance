@@ -12,8 +12,8 @@ class BudgetRepository {
     return db.findAllBudgets();
   }
 
-  Future<void> saveBudget(editedBudget) async {
-    if (editedBudget.id == null) {
+  Future<void> saveBudget(Budget editedBudget) async {
+    if (editedBudget.id == 0) {
       await db.insertBudget(editedBudget);
     } else {
       await db.updateBudget(editedBudget);

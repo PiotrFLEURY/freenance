@@ -34,21 +34,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ref.watch(budgetListProvider).when(
-          data: (budgetList) {
-            if (budgetList.isEmpty) {
-              ref.read(budgetRepositoryProvider).saveBudget(
-                    Budget(
-                      id: 0,
-                      label: 'Mon Budget',
-                      amount: 0,
-                      envelopes: [],
-                    ),
-                  );
-              ref.invalidate(budgetListProvider);
-              return _loadingScreen();
-            }
-            return _content(context, ref, budgetList);
-          },
+          data: (budgetList) => _content(context, ref, budgetList),
           error: _errorScreen,
           loading: _loadingScreen,
         );

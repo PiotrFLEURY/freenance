@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/model/objects/operation.dart';
@@ -61,9 +60,9 @@ class FreenanceDb {
     var path = '$databasesPath/freenance.db';
 
     // Delete the database while debugging
-    if (kDebugMode) {
-      await deleteDatabase(path);
-    }
+    // if (kDebugMode) {
+    //   await deleteDatabase(path);
+    // }
 
     // open the database
     final openedDb = await openDatabase(
@@ -74,11 +73,11 @@ class FreenanceDb {
         await db.execute(createBudgetTable);
         await db.execute(createEnvelopeTable);
         await db.execute(createOperationTable);
-        if (kDebugMode) {
-          await db.execute(insertSampleBudget);
-          await db.execute(insertSampleEnvelope);
-          await db.execute(insertSampleOperation);
-        }
+
+        // Insert sample data
+        await db.execute(insertSampleBudget);
+        await db.execute(insertSampleEnvelope);
+        await db.execute(insertSampleOperation);
       },
     );
 
@@ -135,7 +134,7 @@ class FreenanceDb {
     await db.insert(budgetTable, editedBudget.toMap()..remove('id'));
   }
 
-  Future<void> updateBudget(editedBudget) async {
+  Future<void> updateBudget(Budget editedBudget) async {
     final db = await dbCompleter.future;
     await db.update(
       budgetTable,

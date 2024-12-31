@@ -6,7 +6,7 @@ class SolidButton extends StatefulWidget {
     super.key,
     required this.text,
     required this.action,
-    this.color = mainColor,
+    this.color = defaultColor,
   });
 
   final String text;

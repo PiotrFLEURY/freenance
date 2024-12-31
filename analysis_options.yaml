@@ -21,6 +21,7 @@ linter:
     prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
     require_trailing_commas: true  # Uncomment to enable the `require_trailing_commas` rule
     always_declare_return_types: true  # Uncomment to enable the `always_declare_return_types` rule
+    avoid_dynamic_calls: true  # Uncomment to enable the `avoid_dynamic_calls` rule
 
 analyzer:
   exclude:
