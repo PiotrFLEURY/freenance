@@ -28,4 +28,19 @@ class Operation {
       'date': date.toIso8601String(),
     };
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is Operation) {
+      return id == other.id &&
+          label == other.label &&
+          amount == other.amount &&
+          date == other.date;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode =>
+      id.hashCode ^ label.hashCode ^ amount.hashCode ^ date.hashCode;
 }
