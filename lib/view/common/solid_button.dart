@@ -7,11 +7,13 @@ class SolidButton extends StatefulWidget {
     required this.text,
     required this.action,
     this.color = defaultColor,
+    this.enabled = true,
   });
 
   final String text;
   final void Function() action;
   final Color color;
+  final bool enabled;
 
   @override
   State<SolidButton> createState() => _SolidButtonState();
@@ -35,15 +37,15 @@ class _SolidButtonState extends State<SolidButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.action,
+      onTap: widget.enabled ? widget.action : null,
       onTapDown: (_) => _onPress(),
       onTapUp: (_) => _onRelease(),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: widget.color,
+          color: widget.enabled ? widget.color : Colors.grey,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: _pressed
+          boxShadow: _pressed || !widget.enabled
               ? null
               : [
                   BoxShadow(

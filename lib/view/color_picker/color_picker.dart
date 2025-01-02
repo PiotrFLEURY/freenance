@@ -55,6 +55,13 @@ class _ColorPickerState extends State<ColorPicker> {
     });
   }
 
+  void _resetDefaultColor() {
+    Navigator.pop(
+      context,
+      null,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -103,14 +110,29 @@ class _ColorPickerState extends State<ColorPicker> {
               onChanged: _onBlueChanged,
             ),
             const Spacer(),
-            SolidButton(
-              text: 'Valider',
-              action: () {
-                Navigator.pop(
-                  context,
-                  (red, green, blue),
-                );
-              },
+            Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  child: SolidButton(
+                    text: 'Reset',
+                    action: _resetDefaultColor,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: SolidButton(
+                    text: 'Valider',
+                    action: () {
+                      Navigator.pop(
+                        context,
+                        (red, green, blue),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
             const Spacer(),
           ],

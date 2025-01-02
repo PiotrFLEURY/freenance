@@ -81,12 +81,12 @@ void main() {
       expect(rgb, (0.0, 255.0, 0.0));
     });
 
-    test('should return (0, 0, 0) when envelopeColor is not found', () {
+    test('should return defaultColorHex when envelopeColor is not found', () {
       final colorTheme = ColorTheme(mainColorHex: 'ff0000', envelopeColors: {});
 
       final rgb = colorTheme.envelopeRgb(1);
 
-      expect(rgb, (0.0, 0.0, 0.0));
+      expect(rgb, colorTheme.asRgb(defaultColorHex));
     });
 
     test('should copy with new values', () {

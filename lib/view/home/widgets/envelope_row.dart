@@ -36,43 +36,54 @@ class EnvelopeRow extends ConsumerWidget {
           ),
         ),
       ),
-      child: ListTile(
-        onTap: () => onTap(envelope),
-        leading: Stack(
-          alignment: Alignment.center,
-          children: [
-            CircularProgressIndicator(
+      child: Material(
+        elevation: 2,
+        borderRadius: BorderRadius.circular(16),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 16,
+          ),
+          onTap: () => onTap(envelope),
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.mail_outline,
+            ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                envelope.label,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                '${envelope.amount} €',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: envelopeColor,
+                ),
+              ),
+            ],
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: LinearProgressIndicator(
               value: envelope.remainingRatio,
-              color: envelopeColor,
-              strokeWidth: 4,
-              strokeCap: StrokeCap.round,
+              backgroundColor: Colors.grey[200],
+              valueColor: AlwaysStoppedAnimation<Color>(envelopeColor),
+              minHeight: 24,
+              borderRadius: BorderRadius.circular(8),
             ),
-            Icon(Icons.mail_outline),
-          ],
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              envelope.label,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              '${envelope.amount} €',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('${envelope.totalOperations} €'),
-            Text('${envelope.operationCount} opérations'),
-          ],
+          ),
         ),
       ),
     );

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
-import 'package:freenance/view/envelope/envelope_screen.dart';
-import 'package:freenance/view/home/widgets/budget_edition_dialog.dart';
 import 'package:freenance/view/home/widgets/drawer.dart';
+import 'package:freenance/view/router/voyager.dart';
 import 'package:freenance/view_model/providers.dart';
 import 'package:freenance/view/home/widgets/bottom_sheet.dart';
 
@@ -18,16 +17,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 class HomeScreenState extends ConsumerState<HomeScreen> {
   // PageView controller
   final PageController _pageController = PageController();
-  final HomeBottomSheetController _bottomSheetController =
-      HomeBottomSheetController();
-  bool _showFloatingActionButton = false;
 
   @override
   void initState() {
     super.initState();
-    _pageController.addListener(() {
-      _bottomSheetController.close();
-    });
     ref.read(colorNotifierProvider.notifier).refreshColorTheme();
   }
 
@@ -84,19 +77,20 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: _showFloatingActionButton
-          ? FloatingActionButton(
-              onPressed: () {
-                final budget = budgetList[_pageController.page?.round() ?? 0];
-                _addEnvelope(budget);
-              },
-              backgroundColor: mainColor,
-              foregroundColor: Colors.white,
-              child: const Icon(
-                Icons.add,
-              ),
-            )
-          : null,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          final budget = budgetList[_pageController.page?.round() ?? 0];
+          _addEnvelope(budget);
+        },
+        backgroundColor: mainColor,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Icon(
+          Icons.add,
+        ),
+      ),
       body: PageView.builder(
         controller: _pageController,
         itemCount: budgetList.length,
@@ -132,14 +126,16 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: index > 0 ? _previousPage : null,
-                    icon: Icon(
-                      Icons.arrow_circle_left_outlined,
-                      color: index > 0 ? Colors.white : Colors.grey,
-                      size: 32,
-                    ),
-                  ),
+                  index > 0
+                      ? IconButton(
+                          onPressed: index > 0 ? _previousPage : null,
+                          icon: Icon(
+                            Icons.arrow_circle_left_outlined,
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                        )
+                      : SizedBox(width: 48),
                   InkWell(
                     onLongPress: index > 0
                         ? () => _deleteBudget(context, currentBudget)
@@ -169,6 +165,36 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
               ),
               Spacer(),
+              if (currentBudget.envelopesAmountTooHigh)
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.amber[100],
+                  ),
+                  child: Text(
+                    'Budget dépassé de ${currentBudget.envelopesAmountExcedent.toStringAsFixed(2)} €',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              Container(
+                height: 16,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.grey[400]!,
+                      Colors.grey[200]!,
+                    ],
+                  ),
+                ),
+              ),
               // Bottom sheet
               HomeBottomSheet(
                 currentBudget: currentBudget,
@@ -179,8 +205,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                   currentBudget,
                   envelope,
                 ),
-                onSizeChanged: _expansionListener,
-                controller: _bottomSheetController,
               ),
             ],
           );
@@ -217,8 +241,20 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  void _createBudget() {
-    ref.read(budgetRepositoryProvider).createNewBudget();
+  Future<void> _createBudget() async {
+    final values = await Voyager.pushEdition(
+      context,
+      'Créer un budget',
+      'Nouveau Budget',
+      0,
+    );
+    if (values == null) {
+      return;
+    }
+    ref.read(budgetRepositoryProvider).createNewBudget(
+          values.$1,
+          values.$2,
+        );
     ref.invalidate(budgetListProvider);
     _nextPage();
   }
@@ -228,37 +264,28 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     WidgetRef ref,
     Budget budget,
   ) async {
-    final editedBudget = await showDialog(
-      context: context,
-      builder: (context) => BudgetEditionDialog(
-        budget: budget,
-      ),
+    final values = await Voyager.pushEdition(
+      context,
+      'Modifier le budget',
+      budget.label,
+      budget.amount,
     );
-    if (editedBudget != null) {
+
+    if (values != null) {
+      final editedBudget = budget.copyWith(
+        label: values.$1,
+        amount: values.$2,
+      );
       ref.read(budgetRepositoryProvider).saveBudget(editedBudget);
       ref.invalidate(budgetListProvider);
     }
   }
 
   Future<void> _deleteBudget(BuildContext context, Budget budget) async {
-    final confirm = await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Supprimer le budget ?'),
-          content: Text('Voulez-vous vraiment supprimer ce budget ?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Annuler'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Supprimer'),
-            ),
-          ],
-        );
-      },
+    final confirm = await Voyager.confirm(
+      context,
+      'Supprimer le budget ?',
+      'Êtes-vous sûr de vouloir supprimer le budget "${budget.label}" ?\n\nCette action est irréversible.\nToutes les enveloppes et les opérations liées seront définitivement supprimées.',
     );
     if (confirm) {
       ref.read(budgetRepositoryProvider).deleteBudget(budget);
@@ -266,19 +293,26 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  void _addEnvelope(Budget budget) {
-    ref.read(budgetRepositoryProvider).addEnvelope(budget);
+  Future<void> _addEnvelope(Budget budget) async {
+    (String, double)? values = await Voyager.pushEdition(
+      context,
+      'Ajouter une enveloppe',
+      'Nouvelle enveloppe',
+      0,
+    );
+    if (values == null) {
+      return;
+    }
+    ref.read(budgetRepositoryProvider).addEnvelope(
+          budget,
+          values.$1,
+          values.$2,
+        );
     ref.invalidate(budgetListProvider);
   }
 
   void _editEnvelope(Envelope envelope) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => EnvelopeScreen(
-          envelopeId: envelope.id,
-        ),
-      ),
-    );
+    Voyager.pushEnvelope(context, envelope);
   }
 
   void _deleteEnvelope(
@@ -291,11 +325,5 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     budget.envelopes.remove(envelope);
     ref.read(budgetRepositoryProvider).deleteEnvelope(envelope);
     ref.invalidate(budgetListProvider);
-  }
-
-  void _expansionListener(bool isExpanded) {
-    setState(() {
-      _showFloatingActionButton = isExpanded;
-    });
   }
 }

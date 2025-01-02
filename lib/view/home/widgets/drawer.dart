@@ -106,6 +106,10 @@ class _FreenanceDrawerState extends ConsumerState<FreenanceDrawer> {
       // Change the color theme.
       final colorNotifier = ref.read(colorNotifierProvider.notifier);
       colorNotifier.changeMainColor(rgb.$1, rgb.$2, rgb.$3);
+    } else {
+      // Reset the color theme.
+      final colorNotifier = ref.read(colorNotifierProvider.notifier);
+      colorNotifier.resetMainColor();
     }
   }
 }
