@@ -24,12 +24,12 @@ class BudgetRepository {
     await db.delete(envelope);
   }
 
-  void createNewBudget() {
+  void createNewBudget(String label, double amount) {
     db.insertBudget(
       Budget(
         id: 0,
-        label: 'New budget',
-        amount: 0,
+        label: label,
+        amount: amount,
         envelopes: List.empty(),
       ),
     );
@@ -39,25 +39,29 @@ class BudgetRepository {
     db.deleteBudget(budget);
   }
 
-  void addEnvelope(Budget budget) {
+  void addEnvelope(Budget budget, String label, double amount) {
     db.insertEnvelope(
       budgetId: budget.id,
       envelope: Envelope(
         id: 0,
-        label: 'New envelope',
-        amount: 0,
+        label: label,
+        amount: amount,
         operations: List.empty(),
       ),
     );
   }
 
-  Future<void> addOperation(Envelope envelope) async {
+  Future<void> addOperation(
+    Envelope envelope,
+    String label,
+    double amount,
+  ) async {
     await db.insertOperation(
       envelopeId: envelope.id,
       operation: Operation(
         id: 0,
-        label: 'New operation',
-        amount: 0,
+        label: label,
+        amount: amount,
         date: DateTime.now(),
       ),
     );

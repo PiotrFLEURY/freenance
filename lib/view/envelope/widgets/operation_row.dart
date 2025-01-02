@@ -11,30 +11,41 @@ class OperationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.arrow_downward_outlined),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            operation.label,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
+    return Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(16),
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(8),
           ),
-          Text(
-            ' - ${operation.amount.toStringAsFixed(0)} €',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
+          child: Icon(Icons.arrow_downward_outlined),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              operation.label,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
             ),
+            Text(
+              ' - ${operation.amount.toStringAsFixed(0)} €',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+        subtitle: Text(
+          operation.date.toString(),
+          style: TextStyle(
+            color: Colors.grey,
           ),
-        ],
-      ),
-      subtitle: Text(
-        operation.date.toString(),
-        style: TextStyle(
-          color: Colors.grey,
         ),
       ),
     );

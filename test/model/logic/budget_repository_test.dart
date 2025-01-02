@@ -59,7 +59,12 @@ void main() {
     });
 
     test('createNewBudget inserts a new budget', () {
-      budgetRepository.createNewBudget();
+      String label = 'Test';
+      double amount = 100.0;
+      budgetRepository.createNewBudget(
+        label,
+        amount,
+      );
 
       verify(mockDb.insertBudget(any)).called(1);
     });
@@ -74,8 +79,14 @@ void main() {
 
     test('addEnvelope inserts a new envelope', () {
       final budget = Budget(id: 1, label: 'Test', amount: 100, envelopes: []);
+      final label = 'New envelope';
+      final amount = 100.0;
 
-      budgetRepository.addEnvelope(budget);
+      budgetRepository.addEnvelope(
+        budget,
+        label,
+        amount,
+      );
 
       verify(
         mockDb.insertEnvelope(
@@ -89,7 +100,10 @@ void main() {
       final envelope =
           Envelope(id: 1, label: 'Test', amount: 100, operations: []);
 
-      await budgetRepository.addOperation(envelope);
+      final label = 'New operation';
+      final amount = 100.0;
+
+      await budgetRepository.addOperation(envelope, label, amount);
 
       verify(
         mockDb.insertOperation(

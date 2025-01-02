@@ -84,7 +84,7 @@ class ColorTheme {
   (double, double, double) envelopeRgb(int envelopeId) {
     final color = envelopeColors[envelopeId];
     if (color == null) {
-      return (0, 0, 0);
+      return asRgb(defaultColorHex);
     }
     return asRgb(color);
   }

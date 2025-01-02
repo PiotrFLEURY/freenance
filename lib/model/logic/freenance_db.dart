@@ -162,6 +162,13 @@ class FreenanceDb {
   }
 
   void deleteBudget(Budget budget) {
+    // Delete all operations for the budget
+    for (var envelope in budget.envelopes) {
+      for (var operation in envelope.operations) {
+        deleteOperation(operation);
+      }
+    }
+
     // Delete all envelopes for the budget
     for (var envelope in budget.envelopes) {
       delete(envelope);

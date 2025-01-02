@@ -33,6 +33,21 @@ class Budget {
     return remainingPercentage;
   }
 
+  bool get envelopesAmountTooHigh {
+    return totalEnvelopes > amount;
+  }
+
+  double get totalEnvelopes {
+    return envelopes.fold<double>(
+      0,
+      (previousValue, element) => previousValue + element.amount,
+    );
+  }
+
+  double get envelopesAmountExcedent {
+    return totalEnvelopes - amount;
+  }
+
   static Budget fromMap(Map<String, Object?> e) {
     return Budget(
       id: e['id'] as int,
@@ -48,5 +63,14 @@ class Budget {
       'label': label,
       'amount': amount,
     };
+  }
+
+  Budget copyWith({required String label, required double amount}) {
+    return Budget(
+      id: id,
+      label: label,
+      amount: amount,
+      envelopes: envelopes,
+    );
   }
 }

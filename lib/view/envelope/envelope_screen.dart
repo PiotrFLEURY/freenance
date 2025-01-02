@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/model/objects/operation.dart';
-import 'package:freenance/view/color_picker/color_picker.dart';
 import 'package:freenance/view/common/solid_button.dart';
-import 'package:freenance/view/envelope/widgets/operation_edition_dialog.dart';
 import 'package:freenance/view/envelope/widgets/operation_row.dart';
+import 'package:freenance/view/router/voyager.dart';
 import 'package:freenance/view_model/providers.dart';
 
 class EnvelopeScreen extends ConsumerStatefulWidget {
@@ -154,8 +153,11 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
                         context,
                         operation,
                       ),
-                      child: OperationRow(
-                        operation: operation,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OperationRow(
+                          operation: operation,
+                        ),
                       ),
                     ),
                   );
@@ -207,15 +209,11 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
   }
 
   Future<void> _editEnvelope(BuildContext context, Envelope envelope) async {
-    final (String, double)? values = await showDialog(
-      context: context,
-      builder: (context) {
-        return EditionDialog(
-          title: 'Modifier l\'enveloppe',
-          label: envelope.label,
-          amount: envelope.amount,
-        );
-      },
+    final (String, double)? values = await Voyager.pushEdition(
+      context,
+      'Modifier l\'enveloppe',
+      envelope.label,
+      envelope.amount,
     );
     if (values == null) {
       return;
@@ -231,13 +229,11 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
     BuildContext context,
     Operation operation,
   ) async {
-    final (String, double)? values = await showDialog(
-      context: context,
-      builder: (context) => EditionDialog(
-        title: 'Modifier l\'opération',
-        label: operation.label,
-        amount: operation.amount,
-      ),
+    final (String, double)? values = await Voyager.pushEdition(
+      context,
+      'Modifier l\'opération',
+      operation.label,
+      operation.amount,
     );
     if (values == null) {
       return;
@@ -248,8 +244,24 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
     ref.invalidate(envelopeProvider(widget.envelopeId));
   }
 
-  Future<void> _addOperation(BuildContext context, Envelope envelope) async {
-    await ref.read(budgetRepositoryProvider).addOperation(envelope);
+  Future<void> _addOperation(
+    BuildContext context,
+    Envelope envelope,
+  ) async {
+    (String, double)? values = await Voyager.pushEdition(
+      context,
+      'Ajouter une opération',
+      'Nouvelle opération',
+      0,
+    );
+    if (values == null) {
+      return;
+    }
+    await ref.read(budgetRepositoryProvider).addOperation(
+          envelope,
+          values.$1,
+          values.$2,
+        );
     ref.invalidate(envelopeProvider(widget.envelopeId));
     _filteredOperations = [];
   }
@@ -278,25 +290,24 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
     final envelopeColor = colorTheme.envelopeRgb(envelope.id);
 
     // Open the color picker
-    final (double, double, double)? rgb = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ColorPicker(
-          red: envelopeColor.$1,
-          green: envelopeColor.$2,
-          blue: envelopeColor.$3,
-        ),
-      ),
+    final (double, double, double)? rgb = await Voyager.showColorPicker(
+      context,
+      envelopeColor.$1,
+      envelopeColor.$2,
+      envelopeColor.$3,
     );
     if (rgb == null) {
-      return;
+      ref.read(colorNotifierProvider.notifier).resetEnvelopeColor(
+            envelope.id,
+          );
+    } else {
+      // Update the color of the envelope
+      ref.read(colorNotifierProvider.notifier).changeEnvelopeColor(
+            envelope.id,
+            rgb.$1,
+            rgb.$2,
+            rgb.$3,
+          );
     }
-
-    // Update the color of the envelope
-    ref.read(colorNotifierProvider.notifier).changeEnvelopeColor(
-          envelope.id,
-          rgb.$1,
-          rgb.$2,
-          rgb.$3,
-        );
   }
 }

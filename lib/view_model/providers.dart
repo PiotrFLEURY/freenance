@@ -98,4 +98,31 @@ class ColorNotifier extends _$ColorNotifier {
   String _toHex(int value) {
     return value.toRadixString(16).padLeft(2, '0');
   }
+
+  Future<void> resetMainColor() async {
+    final mainColor = defaultColorHex;
+
+    // Obtain shared preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Save the new color.
+    await prefs.setString('mainColor', mainColor);
+
+    refreshColorTheme();
+  }
+
+  Future<void> resetEnvelopeColor(int id) async {
+    // Obtain shared preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final currentTheme = ColorTheme.fromPrefs(prefs);
+
+    // Remove the color for the envelope.
+    currentTheme.envelopeColors.remove(id);
+
+    // Save the updated theme.
+    currentTheme.toPrefs(prefs);
+
+    refreshColorTheme();
+  }
 }
