@@ -113,7 +113,9 @@ class _BudgetEditionDialogState extends ConsumerState<EditionScreen> {
                 filled: true,
                 fillColor: Colors.grey.shade300,
               ),
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.numberWithOptions(
+                decimal: true,
+              ),
             ),
             Spacer(),
             SolidButton(
@@ -126,7 +128,11 @@ class _BudgetEditionDialogState extends ConsumerState<EditionScreen> {
               color: mainColor,
               action: () {
                 final newLabel = labelController.text;
-                final newAmount = double.parse(amountController.text);
+                final newAmount = double.tryParse(
+                      amountController.text.replaceAll(',', '.'),
+                    ) ??
+                    0;
+
                 Voyager.pop(context, (newLabel, newAmount));
               },
             ),

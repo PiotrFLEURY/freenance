@@ -20,22 +20,11 @@ class EnvelopeRow extends ConsumerWidget {
     final envelopeColor = ref.watch(colorNotifierProvider).envelopeColor(
           envelope.id,
         );
-    return Dismissible(
+    return GestureDetector(
       key: Key('${envelope.id}'),
-      onDismissed: (_) {
+      onLongPress: () {
         onDelete(envelope);
       },
-      background: Container(
-        color: Colors.redAccent,
-        alignment: Alignment.centerRight,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
-        ),
-      ),
       child: Material(
         elevation: 2,
         borderRadius: BorderRadius.circular(16),
