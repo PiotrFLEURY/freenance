@@ -37,6 +37,24 @@ runFeatures() {
     },
   );
   group(
+    'Envelope',
+    () {
+      testWidgets(
+        'Create an envelope',
+        (WidgetTester widgetTester) async {
+          await steps.iStartMyApp(widgetTester);
+          await steps.iWaitForTheLoadingToFinish(widgetTester);
+          await steps.iCreateANewEnvelopeNamedWithAmound(
+            widgetTester,
+            'Mon enveloppe',
+            42.0,
+          );
+          await steps.iShouldSeeTheEnvelopeScreenOpenning(widgetTester);
+        },
+      );
+    },
+  );
+  group(
     'App starts',
     () {
       testWidgets(

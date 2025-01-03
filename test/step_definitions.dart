@@ -5,6 +5,7 @@ import 'package:freenance/app.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/model/objects/operation.dart';
+import 'package:freenance/view/envelope/envelope_screen.dart';
 import 'package:freenance/view/home/widgets/bottom_sheet.dart';
 import 'package:freenance/view/home/widgets/envelope_row.dart';
 import 'package:freenance/view_model/providers.dart';
@@ -53,6 +54,7 @@ class FreenanceStepDefinitions {
         .thenAnswer((_) async => Future.value(fakeEnvelope));
   }
 
+  @Given('I start my App')
   @When('I start my App')
   Future<void> iStartMyApp(WidgetTester tester) async {
     await tester.pumpWidget(
@@ -108,5 +110,33 @@ class FreenanceStepDefinitions {
 
     expect(find.text('Mon Opération'), findsOneWidget);
     expect(find.text('- ${amount.toStringAsFixed(2)} €'), findsOneWidget);
+  }
+
+  @When('I create a new envelope named {string} with {float} amound')
+  Future<void> iCreateANewEnvelopeNamedWithAmound(
+    WidgetTester tester,
+    String label,
+    double amount,
+  ) async {
+    // Click on add button
+    await tester.tap(find.text('Ajouter une enveloppe'));
+    await tester.pumpAndSettle();
+
+    // Fill the label
+    await tester.enterText(find.text('Nouvelle enveloppe'), label);
+    await tester.pumpAndSettle();
+
+    // Fill the amount
+    await tester.enterText(find.text('0.0'), amount.toString());
+    await tester.pumpAndSettle();
+
+    // Click on validate button
+    await tester.tap(find.text('Valider'));
+    await tester.pumpAndSettle();
+  }
+
+  @Then('I should see the envelope screen openning')
+  Future<void> iShouldSeeTheEnvelopeScreenOpenning(WidgetTester tester) async {
+    expect(find.byType(EnvelopeScreen), findsOneWidget);
   }
 }

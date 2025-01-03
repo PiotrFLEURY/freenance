@@ -59,6 +59,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     List<Budget> budgetList,
   ) {
     final mainColor = ref.watch(colorNotifierProvider).mainColor;
+    ref.listen(envelopeCreatedProvider, (oldValue, newValue) {
+      if (oldValue != newValue) {
+        Voyager.pushEnvelope(context, newValue!);
+      }
+    });
 
     return Scaffold(
       backgroundColor: mainColor,
@@ -286,6 +291,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           values.$2,
         );
     ref.invalidate(budgetListProvider);
+
+    ref.read(envelopeCreatedProvider.notifier).envelopeCreated(budget.id);
   }
 
   void _editEnvelope(Envelope envelope) {
