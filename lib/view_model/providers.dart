@@ -35,6 +35,23 @@ Future<Envelope> envelope(Ref ref, int envelopeId) async {
 }
 
 @riverpod
+class EnvelopeCreated extends _$EnvelopeCreated {
+  @override
+  Envelope? build() {
+    return null;
+  }
+
+  Future<void> envelopeCreated(int budgetId) async {
+    final budgetList = await ref.read(budgetListProvider.future);
+    final budget = budgetList.firstWhere((b) => b.id == budgetId);
+    final maxEnvelopeId =
+        budget.envelopes.map((e) => e.id).reduce((a, b) => a > b ? a : b);
+    final envelope = budget.envelopes.firstWhere((e) => e.id == maxEnvelopeId);
+    state = envelope;
+  }
+}
+
+@riverpod
 class ColorNotifier extends _$ColorNotifier {
   @override
   ColorTheme build() {

@@ -205,6 +205,22 @@ class _EnvelopeProviderElement
   int get envelopeId => (origin as EnvelopeProvider).envelopeId;
 }
 
+String _$envelopeCreatedHash() => r'3344d63b3174ccb8b04bdb4aec69ed85c9fa2657';
+
+/// See also [EnvelopeCreated].
+@ProviderFor(EnvelopeCreated)
+final envelopeCreatedProvider =
+    AutoDisposeNotifierProvider<EnvelopeCreated, Envelope?>.internal(
+  EnvelopeCreated.new,
+  name: r'envelopeCreatedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$envelopeCreatedHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$EnvelopeCreated = AutoDisposeNotifier<Envelope?>;
 String _$colorNotifierHash() => r'674a7a81ff505bdd8fd82a4f77edf1d3ea162c0d';
 
 /// See also [ColorNotifier].
