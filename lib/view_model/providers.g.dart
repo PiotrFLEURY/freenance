@@ -205,7 +205,7 @@ class _EnvelopeProviderElement
   int get envelopeId => (origin as EnvelopeProvider).envelopeId;
 }
 
-String _$colorNotifierHash() => r'9f6eed101e44eb95e49612fef1198efb187abf86';
+String _$colorNotifierHash() => r'674a7a81ff505bdd8fd82a4f77edf1d3ea162c0d';
 
 /// See also [ColorNotifier].
 @ProviderFor(ColorNotifier)

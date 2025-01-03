@@ -33,7 +33,7 @@ class OperationRow extends StatelessWidget {
               ),
             ),
             Text(
-              ' - ${operation.amount.toStringAsFixed(0)} €',
+              ' - ${operation.amount.toStringAsFixed(2)} €',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,

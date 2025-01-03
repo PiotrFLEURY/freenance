@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
+import 'package:freenance/view/home/widgets/bottom_bar.dart';
 import 'package:freenance/view/home/widgets/drawer.dart';
 import 'package:freenance/view/router/voyager.dart';
 import 'package:freenance/view_model/providers.dart';
@@ -68,28 +69,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         backgroundColor: mainColor,
         foregroundColor: Colors.white,
         centerTitle: false,
-        title: Text(
-          'Freenance',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final budget = budgetList[_pageController.page?.round() ?? 0];
-          _addEnvelope(budget);
-        },
-        backgroundColor: mainColor,
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const Icon(
-          Icons.add,
-        ),
       ),
       body: PageView.builder(
         controller: _pageController,
@@ -97,31 +76,10 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         itemBuilder: (context, index) {
           final currentBudget = budgetList[index];
           return Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Spacer(),
-              // Budget label
-              InkWell(
-                onLongPress: index > 0
-                    ? () => _deleteBudget(context, currentBudget)
-                    : null,
-                onTap: () => _editBudget(context, ref, currentBudget),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    currentBudget.label,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              Spacer(),
-              // Budget value
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,7 +90,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           icon: Icon(
                             Icons.arrow_circle_left_outlined,
                             color: Colors.white,
-                            size: 32,
+                            size: 24,
                           ),
                         )
                       : SizedBox(width: 48),
@@ -145,7 +103,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       '${currentBudget.amount} €',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 48,
+                        fontSize: 32,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -159,12 +117,23 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           ? Icons.arrow_circle_right_outlined
                           : Icons.add_circle_outline_outlined,
                       color: Colors.white,
-                      size: 32,
+                      size: 24,
                     ),
                   ),
                 ],
               ),
-              Spacer(),
+              // Budget label
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  currentBudget.label,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
               if (currentBudget.envelopesAmountTooHigh)
                 Container(
                   alignment: Alignment.center,
@@ -196,18 +165,26 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               // Bottom sheet
-              HomeBottomSheet(
-                currentBudget: currentBudget,
-                onAddEnvelope: () => _addEnvelope(currentBudget),
-                onEditEnvelope: (envelope) => _editEnvelope(envelope),
-                onDeleteEnvelope: (envelope) => _deleteEnvelope(
-                  context,
-                  currentBudget,
-                  envelope,
+              Expanded(
+                child: HomeBottomSheet(
+                  currentBudget: currentBudget,
+                  onAddEnvelope: () => _addEnvelope(currentBudget),
+                  onEditEnvelope: (envelope) => _editEnvelope(envelope),
+                  onDeleteEnvelope: (envelope) => _deleteEnvelope(
+                    context,
+                    currentBudget,
+                    envelope,
+                  ),
                 ),
               ),
             ],
           );
+        },
+      ),
+      bottomNavigationBar: BottomBar(
+        onAddEnvelope: () {
+          final budget = budgetList[_pageController.page?.round() ?? 0];
+          _addEnvelope(budget);
         },
       ),
     );
@@ -315,11 +292,19 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     Voyager.pushEnvelope(context, envelope);
   }
 
-  void _deleteEnvelope(
+  Future<void> _deleteEnvelope(
     BuildContext context,
     Budget budget,
     Envelope envelope,
-  ) {
+  ) async {
+    final confirm = await Voyager.confirm(
+      context,
+      'Supprimer l\'enveloppe ?',
+      'Etes-vous sûr de vouloir supprimer l\'enveloppe "${envelope.label}" ?\n\nCette action est irréversible.\nToutes les opérations liées seront définitivement supprimées.',
+    );
+    if (!confirm) {
+      return;
+    }
     // First remove the envelope from the budget in order to
     // avoid dissmisible error
     budget.envelopes.remove(envelope);

@@ -82,7 +82,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
               child: InkWell(
                 onTap: () => _editEnvelope(context, envelope),
                 child: Text(
-                  '${envelope.amount.toStringAsFixed(0)} €',
+                  '${envelope.amount.toStringAsFixed(2)} €',
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
@@ -196,7 +196,8 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: SolidButton(
-                text: 'Ajouter',
+                icon: Icons.arrow_downward,
+                text: 'Ajouter une opération',
                 color: envelopeColor,
                 action: () => _addOperation(context, envelope),
               ),

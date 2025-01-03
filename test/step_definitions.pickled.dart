@@ -18,10 +18,7 @@ runFeatures() {
         (WidgetTester widgetTester) async {
           await steps.iStartMyApp(widgetTester);
           await steps.iShouldSeeALoader(widgetTester);
-          await steps.thenTheText(
-            widgetTester,
-            'Freenance',
-          );
+          await steps.thenTheHomePage(widgetTester);
         },
       );
     },

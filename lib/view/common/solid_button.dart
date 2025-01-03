@@ -4,12 +4,14 @@ import 'package:freenance/view/theme/colors.dart';
 class SolidButton extends StatefulWidget {
   const SolidButton({
     super.key,
+    this.icon,
     required this.text,
     required this.action,
     this.color = defaultColor,
     this.enabled = true,
   });
 
+  final IconData? icon;
   final String text;
   final void Function() action;
   final Color color;
@@ -60,14 +62,26 @@ class _SolidButtonState extends State<SolidButton> {
             vertical: 16,
             horizontal: 24,
           ),
-          child: Text(
-            widget.text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: [
+              if (widget.icon != null)
+                Icon(
+                  widget.icon,
+                  color: Colors.white,
+                ),
+              Text(
+                widget.text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
         ),
       ),
