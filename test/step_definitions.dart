@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,19 +19,19 @@ class FreenanceStepDefinitions {
 
   FreenanceStepDefinitions() {
     final fakeOperation = Operation(
-                id: 0,
-                label: 'Mon Opération',
-                amount: 500,
-                date: DateTime.now(),
-              );
+      id: 0,
+      label: 'Mon Opération',
+      amount: 500,
+      date: DateTime.now(),
+    );
     final fakeEnvelope = Envelope(
-            id: 0,
-            label: 'Mon Enveloppe',
-            amount: 1_000,
-            operations: [
-              fakeOperation,
-            ],
-          );
+      id: 0,
+      label: 'Mon Enveloppe',
+      amount: 1_000,
+      operations: [
+        fakeOperation,
+      ],
+    );
     final fakeBudgetList = [
       Budget(
         id: 0,
@@ -51,7 +49,8 @@ class FreenanceStepDefinitions {
     when(mockDatabase.init()).thenAnswer((_) async {});
     when(mockDatabase.findAllBudgets()).thenAnswer((_) async => fakeBudgetList);
 
-    when(mockDatabase.findEnvelope(any)).thenAnswer((_) async => Future.value(fakeEnvelope));
+    when(mockDatabase.findEnvelope(any))
+        .thenAnswer((_) async => Future.value(fakeEnvelope));
   }
 
   @When('I start my App')
@@ -106,7 +105,7 @@ class FreenanceStepDefinitions {
     double amount,
   ) async {
     await tester.pumpAndSettle();
-    
+
     expect(find.text('Mon Opération'), findsOneWidget);
     expect(find.text('- ${amount.toStringAsFixed(2)} €'), findsOneWidget);
   }
