@@ -11,6 +11,32 @@ import 'step_definitions.dart';
 runFeatures() {
   final steps = FreenanceStepDefinitions();
   group(
+    'Budget',
+    () {
+      testWidgets(
+        'First budget',
+        (WidgetTester widgetTester) async {
+          await steps.iStartMyApp(widgetTester);
+          await steps.iWaitForTheLoadingToFinish(widgetTester);
+          await steps.iShouldAlreadyHaveABudget(widgetTester);
+          await steps.andIShouldSeeAnEnvelope(widgetTester);
+        },
+      );
+      testWidgets(
+        'First envelope',
+        (WidgetTester widgetTester) async {
+          await steps.iStartMyApp(widgetTester);
+          await steps.iWaitForTheLoadingToFinish(widgetTester);
+          await steps.iTapOnTheEnvelope(widgetTester);
+          await steps.iShouldSeeAnOperationOfEuros(
+            widgetTester,
+            500.0,
+          );
+        },
+      );
+    },
+  );
+  group(
     'App starts',
     () {
       testWidgets(

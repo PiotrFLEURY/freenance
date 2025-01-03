@@ -30,6 +30,16 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "run integration tests",
+            "type": "shell",
+            "command": "flutter test integration_test/app_test.dart",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
         }
     ]
 }
