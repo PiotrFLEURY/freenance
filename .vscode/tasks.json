@@ -40,6 +40,17 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        
+        },
+        {
+            "label": "format files",
+            "type": "shell",
+            "command": "dart format --enable-experiment=digit-separators .",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
         }
     ]
 }
