@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freenance/view/common/solid_button.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 
 class ColorPicker extends StatefulWidget {
   const ColorPicker({
@@ -75,7 +76,7 @@ class _ColorPickerState extends State<ColorPicker> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choisir une couleur'),
+        title: Text(context.translate('color_picker_title')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -89,21 +90,21 @@ class _ColorPickerState extends State<ColorPicker> {
               color: actualColor,
             ),
             const Spacer(),
-            const Text('Rouge'),
+            Text(context.translate('color_picker_red_color')),
             Slider(
               value: red,
               max: 255,
               onChanged: _onRedChanged,
             ),
             const Spacer(),
-            const Text('Vert'),
+            Text(context.translate('color_picker_green_color')),
             Slider(
               value: green,
               max: 255,
               onChanged: _onGreenChanged,
             ),
             const Spacer(),
-            const Text('Bleu'),
+            Text(context.translate('color_picker_blue_color')),
             Slider(
               value: blue,
               max: 255,
@@ -112,10 +113,9 @@ class _ColorPickerState extends State<ColorPicker> {
             const Spacer(),
             Row(
               children: [
-                SizedBox(
-                  width: 100,
+                Flexible(
                   child: SolidButton(
-                    text: 'Reset',
+                    text: context.translate('color_picker_reset_button'),
                     action: _resetDefaultColor,
                     color: Colors.grey.shade600,
                   ),
@@ -123,7 +123,7 @@ class _ColorPickerState extends State<ColorPicker> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: SolidButton(
-                    text: 'Valider',
+                    text: context.translate('color_picker_validate_button'),
                     action: () {
                       Navigator.pop(
                         context,

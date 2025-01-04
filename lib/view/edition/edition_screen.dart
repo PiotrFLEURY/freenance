@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/view/common/solid_button.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 import 'package:freenance/view/router/voyager.dart';
 import 'package:freenance/view_model/providers.dart';
 
@@ -13,8 +14,8 @@ class EditionScreen extends ConsumerStatefulWidget {
   });
 
   final String title;
-  final String label;
-  final double amount;
+  final String? label;
+  final double? amount;
 
   @override
   ConsumerState<EditionScreen> createState() => _BudgetEditionDialogState();
@@ -30,8 +31,8 @@ class _BudgetEditionDialogState extends ConsumerState<EditionScreen> {
   @override
   void initState() {
     super.initState();
-    labelController.text = widget.label;
-    amountController.text = widget.amount.toString();
+    labelController.text = widget.label ?? '';
+    amountController.text = widget.amount?.toString() ?? '';
     labelFocusNode.addListener(
       () {
         if (labelFocusNode.hasFocus) {
@@ -82,11 +83,12 @@ class _BudgetEditionDialogState extends ConsumerState<EditionScreen> {
               ],
             ),
             TextField(
+              key: Key('edition_screen_label'),
               controller: labelController,
               focusNode: labelFocusNode,
               decoration: InputDecoration(
-                labelText: 'Budget',
-                hintText: 'Mon Budget',
+                labelText: context.translate('edition_screen_label'),
+                hintText: context.translate('edition_screen_label_hint'),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
@@ -99,11 +101,12 @@ class _BudgetEditionDialogState extends ConsumerState<EditionScreen> {
               textInputAction: TextInputAction.next,
             ),
             TextField(
+              key: Key('edition_screen_amount'),
               controller: amountController,
               focusNode: amountFocusNode,
               decoration: InputDecoration(
-                labelText: 'Montant',
-                hintText: '0',
+                labelText: context.translate('edition_screen_amount'),
+                hintText: context.translate('edition_screen_amount_hint'),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
@@ -119,12 +122,12 @@ class _BudgetEditionDialogState extends ConsumerState<EditionScreen> {
             ),
             Spacer(),
             SolidButton(
-              text: 'Annuler',
+              text: context.translate('edition_screen_cancel_button'),
               action: () => Voyager.pop(context),
               color: Colors.grey,
             ),
             SolidButton(
-              text: 'Valider',
+              text: context.translate('edition_screen_validate_button'),
               color: mainColor,
               action: () {
                 final newLabel = labelController.text;

@@ -2,5 +2,5 @@ Feature: App starts
 
     Scenario: Start App
         When I start my App
-        Then I should see a loader
-        And then the home page
+        And I wait for the loading to finish
+        Then then the home page

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/logic/freenance_db.dart';
 import 'package:freenance/model/objects/budget.dart';
@@ -141,5 +143,30 @@ class ColorNotifier extends _$ColorNotifier {
     currentTheme.toPrefs(prefs);
 
     refreshColorTheme();
+  }
+}
+
+@riverpod
+class SelectedLocale extends _$SelectedLocale {
+  @override
+  Locale? build() {
+    return null;
+  }
+
+  Future<void> loadPreferedLocale() async {
+    if (state != null) {
+      return;
+    }
+    final preferences = await SharedPreferences.getInstance();
+    final languageCode = preferences.getString('languageCode');
+    if (languageCode != null) {
+      state = Locale(languageCode);
+    }
+  }
+
+  Future<void> changeLocale(String languageCode) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString('languageCode', languageCode);
+    state = Locale(languageCode);
   }
 }

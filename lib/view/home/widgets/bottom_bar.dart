@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freenance/view/common/solid_button.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({super.key, required this.onAddEnvelope});
@@ -19,7 +20,7 @@ class BottomBar extends StatelessWidget {
         ),
         child: SolidButton(
           icon: Icons.add,
-          text: 'Ajouter une enveloppe',
+          text: context.translate('home_screen_add_envelope'),
           action: onAddEnvelope,
         ),
       ),
