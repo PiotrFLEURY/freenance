@@ -36,10 +36,10 @@ class Voyager {
   /// Returns the new label and amount
   static Future<(String, double)?> pushEdition(
     BuildContext context,
-    String title,
-    String label,
-    double amount,
-  ) {
+    String title, [
+    String? label,
+    double? amount,
+  ]) {
     return Navigator.of(context).push<(String, double)>(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {

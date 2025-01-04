@@ -4,6 +4,7 @@ import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/view/home/widgets/bottom_bar.dart';
 import 'package:freenance/view/home/widgets/drawer.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 import 'package:freenance/view/router/voyager.dart';
 import 'package:freenance/view_model/providers.dart';
 import 'package:freenance/view/home/widgets/bottom_sheet.dart';
@@ -148,7 +149,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     color: Colors.amber[100],
                   ),
                   child: Text(
-                    'Budget dépassé de ${currentBudget.envelopesAmountExcedent.toStringAsFixed(2)} €',
+                    context.translate('home_screen_budget_exceeded', [
+                      currentBudget.envelopesAmountExcedent.toStringAsFixed(2),
+                    ]),
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 16,
@@ -226,9 +229,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _createBudget() async {
     final values = await Voyager.pushEdition(
       context,
-      'Créer un budget',
-      'Nouveau Budget',
-      0,
+      context.translate('home_screen_create_budget'),
     );
     if (values == null) {
       return;
@@ -248,7 +249,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   ) async {
     final values = await Voyager.pushEdition(
       context,
-      'Modifier le budget',
+      context.translate('home_screen_edit_budget'),
       budget.label,
       budget.amount,
     );
@@ -278,9 +279,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _addEnvelope(Budget budget) async {
     (String, double)? values = await Voyager.pushEdition(
       context,
-      'Ajouter une enveloppe',
-      'Nouvelle enveloppe',
-      0,
+      context.translate('home_screen_add_envelope'),
     );
     if (values == null) {
       return;

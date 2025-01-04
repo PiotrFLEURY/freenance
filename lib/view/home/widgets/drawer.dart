@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/view/color_picker/color_picker.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 import 'package:freenance/view_model/providers.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -27,6 +28,7 @@ class _FreenanceDrawerState extends ConsumerState<FreenanceDrawer> {
   @override
   Widget build(BuildContext context) {
     final mainColor = ref.watch(colorNotifierProvider).mainColor;
+    final selectedLocale = ref.watch(selectedLocaleProvider);
     return Column(
       children: [
         DrawerHeader(
@@ -39,7 +41,7 @@ class _FreenanceDrawerState extends ConsumerState<FreenanceDrawer> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Freenance',
+                  context.translate('app_name'),
                   style: TextStyle(
                     fontSize: 24,
                     color: Colors.white,
@@ -57,17 +59,25 @@ class _FreenanceDrawerState extends ConsumerState<FreenanceDrawer> {
           ),
         ),
         ListTile(
-          title: const Text('Mes budgets'),
+          title: Text(
+            context.translate(
+              'drawer_menu_home',
+            ),
+          ),
           onTap: () {
             Navigator.pop(context);
           },
         ),
         ListTile(
-          title: const Text('Thème'),
+          title: Text(
+            context.translate('drawer_menu_color_theme'),
+          ),
           onTap: () => _changeColorTheme(context),
         ),
         ListTile(
-          title: const Text('A propos'),
+          title: Text(
+            context.translate('drawer_menu_about'),
+          ),
           onTap: () {
             showAboutDialog(
               context: context,
@@ -76,6 +86,42 @@ class _FreenanceDrawerState extends ConsumerState<FreenanceDrawer> {
               applicationVersion: version,
               applicationLegalese: '© 2024 Piotr FLEURY',
             );
+          },
+        ),
+        Divider(),
+        Text(
+          context.translate('drawer_menu_language'),
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey,
+          ),
+        ),
+        ListTile(
+          leading: selectedLocale?.languageCode == 'fr'
+              ? const Icon(
+                  Icons.check,
+                  size: 16,
+                )
+              : SizedBox(width: 16),
+          title: Text(
+            context.translate('drawer_menu_french'),
+          ),
+          onTap: () {
+            ref.read(selectedLocaleProvider.notifier).changeLocale('fr');
+          },
+        ),
+        ListTile(
+          leading: selectedLocale?.languageCode == 'en'
+              ? const Icon(
+                  Icons.check,
+                  size: 16,
+                )
+              : SizedBox(width: 16),
+          title: Text(
+            context.translate('drawer_menu_english'),
+          ),
+          onTap: () {
+            ref.read(selectedLocaleProvider.notifier).changeLocale('en');
           },
         ),
       ],

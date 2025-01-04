@@ -61,7 +61,7 @@ runFeatures() {
         'Start App',
         (WidgetTester widgetTester) async {
           await steps.iStartMyApp(widgetTester);
-          await steps.iShouldSeeALoader(widgetTester);
+          await steps.iWaitForTheLoadingToFinish(widgetTester);
           await steps.thenTheHomePage(widgetTester);
         },
       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freenance/view/common/solid_button.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 
 class ConfirmationDialog extends StatefulWidget {
   const ConfirmationDialog({
@@ -40,16 +41,18 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
           Text(widget.message),
           SolidButton(
             action: widget.onCancel,
-            text: 'Annuler',
+            text: context.translate('confirmation_dialog_cancel'),
           ),
           CheckboxListTile(
             value: _understood,
             onChanged: (value) => _checkUnderstood(value ?? false),
-            title: Text('Je comprends'),
+            title: Text(
+              context.translate('confirmation_dialog_understood'),
+            ),
           ),
           SolidButton(
             action: widget.onConfirm,
-            text: 'Confirmer',
+            text: context.translate('confirmation_dialog_confirm'),
             color: Colors.red,
             enabled: _understood,
           ),

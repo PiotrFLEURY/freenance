@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freenance/model/objects/budget.dart';
 import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/view/home/widgets/envelope_row.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 import 'package:freenance/view_model/providers.dart';
 
 class HomeBottomSheet extends ConsumerWidget {
@@ -34,7 +35,7 @@ class HomeBottomSheet extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Restant',
+                  context.translate('home_screen_remaining'),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),

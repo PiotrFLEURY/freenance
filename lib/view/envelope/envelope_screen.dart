@@ -4,6 +4,7 @@ import 'package:freenance/model/objects/envelope.dart';
 import 'package:freenance/model/objects/operation.dart';
 import 'package:freenance/view/common/solid_button.dart';
 import 'package:freenance/view/envelope/widgets/operation_row.dart';
+import 'package:freenance/view/localization/freenance_localization.dart';
 import 'package:freenance/view/router/voyager.dart';
 import 'package:freenance/view_model/providers.dart';
 
@@ -64,7 +65,9 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Envelope ${envelope.label}'),
+          title: Text(
+            context.translate('envelope_screen_title', [envelope.label]),
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.color_lens_outlined),
@@ -94,7 +97,9 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Restant ${envelope.remainingAmount} €',
+                context.translate('envelope_screen_remaining', [
+                  envelope.remainingAmount.toStringAsFixed(2),
+                ]),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
@@ -105,8 +110,8 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Recherche',
-                  hintText: 'courses, loyer, ...',
+                  labelText: context.translate('envelope_screen_search_field'),
+                  hintText: context.translate('envelope_screen_search_hint'),
                   suffixIcon: Icon(Icons.search),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -175,7 +180,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
               child: Row(
                 children: [
                   Text(
-                    'Total:',
+                    context.translate('envelope_screen_total_operations'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -197,7 +202,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
               padding: const EdgeInsets.all(16.0),
               child: SolidButton(
                 icon: Icons.arrow_downward,
-                text: 'Ajouter une opération',
+                text: context.translate('envelope_screen_add_operation'),
                 color: envelopeColor,
                 action: () => _addOperation(context, envelope),
               ),
@@ -212,7 +217,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
   Future<void> _editEnvelope(BuildContext context, Envelope envelope) async {
     final (String, double)? values = await Voyager.pushEdition(
       context,
-      'Modifier l\'enveloppe',
+      context.translate('envelope_screen_edit_envelope'),
       envelope.label,
       envelope.amount,
     );
@@ -232,7 +237,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
   ) async {
     final (String, double)? values = await Voyager.pushEdition(
       context,
-      'Modifier l\'opération',
+      context.translate('envelope_screen_edit_operation'),
       operation.label,
       operation.amount,
     );
@@ -251,9 +256,7 @@ class _EnvelopeScreenState extends ConsumerState<EnvelopeScreen> {
   ) async {
     (String, double)? values = await Voyager.pushEdition(
       context,
-      'Ajouter une opération',
-      'Nouvelle opération',
-      0,
+      context.translate('envelope_screen_add_operation'),
     );
     if (values == null) {
       return;
