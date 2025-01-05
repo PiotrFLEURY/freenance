@@ -1,60 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'providers.dart';
+part of 'envelope.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$databaseHash() => r'a9c4b9efe512ffab54ca365b240dfa260fa957f9';
-
-/// See also [database].
-@ProviderFor(database)
-final databaseProvider = AutoDisposeProvider<FreenanceDb>.internal(
-  database,
-  name: r'databaseProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$databaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DatabaseRef = AutoDisposeProviderRef<FreenanceDb>;
-String _$budgetRepositoryHash() => r'10598f90afff167e89c918094bd62269569d58f3';
-
-/// See also [budgetRepository].
-@ProviderFor(budgetRepository)
-final budgetRepositoryProvider = AutoDisposeProvider<BudgetRepository>.internal(
-  budgetRepository,
-  name: r'budgetRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$budgetRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BudgetRepositoryRef = AutoDisposeProviderRef<BudgetRepository>;
-String _$budgetListHash() => r'e2a2baab3f82b1a389c459723ec0446165a6f297';
-
-/// See also [budgetList].
-@ProviderFor(budgetList)
-final budgetListProvider = AutoDisposeFutureProvider<List<Budget>>.internal(
-  budgetList,
-  name: r'budgetListProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$budgetListHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BudgetListRef = AutoDisposeFutureProviderRef<List<Budget>>;
 String _$envelopeHash() => r'a676af9c0bf9a75450985da070a20dc05d3b7ee0';
 
 /// Copied from Dart SDK
@@ -204,54 +155,5 @@ class _EnvelopeProviderElement
   @override
   int get envelopeId => (origin as EnvelopeProvider).envelopeId;
 }
-
-String _$envelopeCreatedHash() => r'3344d63b3174ccb8b04bdb4aec69ed85c9fa2657';
-
-/// See also [EnvelopeCreated].
-@ProviderFor(EnvelopeCreated)
-final envelopeCreatedProvider =
-    AutoDisposeNotifierProvider<EnvelopeCreated, Envelope?>.internal(
-  EnvelopeCreated.new,
-  name: r'envelopeCreatedProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$envelopeCreatedHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$EnvelopeCreated = AutoDisposeNotifier<Envelope?>;
-String _$colorNotifierHash() => r'674a7a81ff505bdd8fd82a4f77edf1d3ea162c0d';
-
-/// See also [ColorNotifier].
-@ProviderFor(ColorNotifier)
-final colorNotifierProvider =
-    AutoDisposeNotifierProvider<ColorNotifier, ColorTheme>.internal(
-  ColorNotifier.new,
-  name: r'colorNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$colorNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$ColorNotifier = AutoDisposeNotifier<ColorTheme>;
-String _$selectedLocaleHash() => r'8a1285e4ebb982c41f0a2086c1550ecfc94ef226';
-
-/// See also [SelectedLocale].
-@ProviderFor(SelectedLocale)
-final selectedLocaleProvider =
-    AutoDisposeNotifierProvider<SelectedLocale, Locale?>.internal(
-  SelectedLocale.new,
-  name: r'selectedLocaleProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$selectedLocaleHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$SelectedLocale = AutoDisposeNotifier<Locale?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
